@@ -1,33 +1,34 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\DescriptionController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ResourceController;
+use App\Http\Controllers\AboutController;
 
-// routes de usuários
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show'); 
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+// Rotas públicas
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/recursos', [ResourceController::class, 'index'])->name('resources');
+Route::get('/sobre', [AboutController::class, 'index'])->name('about');
 
-//routes de produtos
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/create', [ProductController::class, 'create'])->name('products.create'); 
-Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+// Rotas de autenticação (acessíveis apenas para visitantes)
+Route::middleware('guest')->group(function () {
+    // Login
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+    
+    // Registro
+    Route::get('/cadastro', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/cadastro', [RegisterController::class, 'register'])->name('register.submit');
+});
 
-// Rotas de descrições
-Route::get('/descriptions', [DescriptionController::class, 'index'])->name('descriptions.index');
-Route::get('/descriptions/create', [DescriptionController::class, 'create'])->name('descriptions.create'); 
-Route::post('/descriptions', [DescriptionController::class, 'store'])->name('descriptions.store');
-Route::get('/descriptions/{description}', [DescriptionController::class, 'show'])->name('descriptions.show');
-Route::get('/descriptions/{description}/edit', [DescriptionController::class, 'edit'])->name('descriptions.edit');
-Route::put('/descriptions/{description}', [DescriptionController::class, 'update'])->name('descriptions.update');
-Route::delete('/descriptions/{description}', [DescriptionController::class, 'destroy'])->name('descriptions.destroy');
+// Rotas protegidas (acessíveis apenas para usuários autenticados)
+Route::middleware('auth')->group(function () {
+    // Logout
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
