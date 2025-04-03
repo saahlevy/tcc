@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('name'); // Nome do produto
-            $table->decimal('price', 10, 2); // Preço do produto
-            $table->timestamps(); // created_at e updated_at
+        Schema::table('descriptions', function (Blueprint $table) {
+            $table->string('title'); // Adicionar o campo title
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::table('descriptions', function (Blueprint $table) {
+            $table->dropColumn('title'); // Remover o campo title
+        });
     }
 };

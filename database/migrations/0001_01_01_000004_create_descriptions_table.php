@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('descriptions', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->text('content'); // Conteúdo da descrição
-            $table->unsignedBigInteger('product_id'); // Relacionamento com a tabela products
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps(); // created_at e updated_at
         });
     }

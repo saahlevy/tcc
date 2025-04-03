@@ -13,6 +13,6 @@
 
     ID: {{ $product->id }}<br>
     Nome: {{ $product->name }}<br>
-    Descrição: {{ $product->description }}<br>
+    Preço: {{ $product->price }}<br>
 </body>
 </html>

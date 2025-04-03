@@ -19,8 +19,8 @@
         <label for="name">Nome:</label>
         <input type="text" name="name" id="name" value="{{ old('name', $product->name) }}">
         <br><br>
-        <label for="description">Descrição:</label>
-        <textarea name="description" id="description">{{ old('description', $product->description) }}</textarea>
+        <label for="price">Preço:</label>
+        <input type="text" name="price" id="price" value="{{ old('price', $product->price) }}">
         <br><br>
         <button type="submit">Salvar</button>
     </form>

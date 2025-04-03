@@ -4,7 +4,7 @@
     <title>Cadastrar Produto</title>
 </head>
 <body>
-    <a href="{{ route('produto.index') }}">Voltar</a>
+    <a href="{{ route('products.index') }}">Voltar</a>
     <h1>Cadastrar Produto</h1>
 
     @if ($errors->any())
@@ -18,8 +18,8 @@
         <label for="name">Nome:</label>
         <input type="text" name="name" id="name" value="{{ old('name') }}">
         <br><br>
-        <label for="description">Descrição:</label>
-        <textarea name="description" id="description">{{ old('description') }}</textarea>
+        <label for="price">Preço:</label>
+        <input type="text" name="price" id="price" value="{{ old('price') }}">
         <br><br>
         <button type="submit">Cadastrar</button>
     </form>

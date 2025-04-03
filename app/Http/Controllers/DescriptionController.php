@@ -9,24 +9,24 @@ use App\Http\Requests\UpdateDescriptionRequest;
 class DescriptionController extends Controller
 {
     public function index()
-    {   
-        // Recuperar registros do banco de dados
-        $descriptions = Description::orderByDesc('id')->get();
+    {
+        // Recuperar registros do banco de dados com paginação
+        $descriptions = Description::orderByDesc('id')->paginate(10); 
 
-        // Carregar a view description.index
-        return view('description.index', ['descriptions' => $descriptions]);
+        // Carregar a view descriptions.index
+        return view('descriptions.index', ['descriptions' => $descriptions]);
     }
 
     public function show(Description $description)
     {
         // Carregar a view description.show
-        return view('description.show', ['description' => $description]);
+        return view('descriptions.show', ['description' => $description]);
     }
 
     public function create()
     {
         // Carregar a view description.create
-        return view('description.create');
+        return view('descriptions.create');
     }
 
     public function store(StoreDescriptionRequest $request)
@@ -40,18 +40,18 @@ class DescriptionController extends Controller
             'content' => $request->content,
         ]);
 
-        // Redirecionar para a rota description.index com uma mensagem de sucesso
-        return redirect()->route('description.index')->with('success', 'Description created successfully!');
+        // Redirecionar para a rota descriptions.index com uma mensagem de sucesso
+        return redirect()->route('descriptions.index')->with('success', 'Description created successfully!');
     }
 
     public function edit(Description $description)
     {
         // Carregar a view description.edit
-        return view('description.edit', ['description' => $description]);
+        return view('descriptions.edit', ['description' => $description]);
     }
 
     public function update(UpdateDescriptionRequest $request, Description $description)
-    {   
+    {
         // Validar o formulário
         $request->validated();
 
@@ -62,7 +62,7 @@ class DescriptionController extends Controller
         ]);
 
         // Redirecionar para a rota description.show com uma mensagem de sucesso
-        return redirect()->route('description.show', ['description' => $description->id])->with('success', 'Description updated successfully!');
+        return redirect()->route('descriptions.show', ['description' => $description->id])->with('success', 'Description updated successfully!');
     }
 
     public function destroy(Description $description)
@@ -71,6 +71,6 @@ class DescriptionController extends Controller
         $description->delete();
 
         // Redirecionar para a rota description.index com uma mensagem de sucesso
-        return redirect()->route('description.index')->with('success', 'Description deleted successfully!');
+        return redirect()->route('descriptions.index')->with('success', 'Description deleted successfully!');
     }
 }
