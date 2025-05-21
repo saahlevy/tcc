@@ -2,63 +2,147 @@
 
 @section('styles')
 <style>
+    body {
+        background-color: #e8c3c3;
+    }
+
+    /* Cards padrão */
+    .card {
+        background-color: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border: none;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+        background-color: transparent;
+        border-bottom: none;
+        font-weight: 600;
+        color: #933b3b;
+        font-size: 1.25rem;
+    }
+
+    /* Inputs padrão */
+    .form-control {
+        border-radius: 20px;
+        background-color: #f5f5f5;
+        border: none;
+        box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+        transition: box-shadow 0.3s ease;
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+    .form-control:focus {
+        background-color: white;
+        box-shadow: 0 0 5px 2px rgba(147, 59, 59, 0.5);
+        border: none;
+        outline: none;
+    }
+
+    /* Botões padrão */
+    .btn-primary {
+        background-color: #933b3b;
+        border-color: #933b3b;
+        border-radius: 20px;
+        min-width: 100px;
+        padding: 10px 20px;
+        font-weight: 600;
+    }
+
+    .btn-primary:hover {
+        background-color: #7a2f2f;
+        border-color: #7a2f2f;
+    }
+
+    .btn-danger {
+        background-color: #c0392b;
+        border-color: #c0392b;
+        border-radius: 20px;
+        min-width: 100px;
+        padding: 10px 20px;
+        font-weight: 600;
+    }
+
+    .btn-danger:hover {
+        background-color: #922b23;
+        border-color: #922b23;
+    }
+
+    .btn-success {
+        background-color: #27ae60;
+        border-color: #27ae60;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-weight: 600;
+    }
+
+    .btn-success:hover {
+        background-color: #1e8449;
+        border-color: #1e8449;
+    }
+
+    /* Timer */
     .timer {
         font-size: 2.5em;
         font-weight: bold;
-        color: #2d3748;
+        color: #933b3b;
         margin: 20px 0;
+        text-align: center;
     }
-    
+
+    /* Seção input escondida */
     .input-section {
-        background-color: #f8fafc;
+        background-color: #f5f5f5;
         padding: 15px;
-        border-radius: 8px;
+        border-radius: 20px;
         margin-top: 20px;
     }
-    
+
+    /* Registros */
     .registro {
         background-color: #fff;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
+        border-radius: 20px;
         padding: 15px;
         margin-bottom: 10px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: background-color 0.3s ease;
     }
-    
+
     .registro:hover {
-        background-color: #f8fafc;
+        background-color: #f8e5e5;
     }
-    
+
     .registro strong {
         color: #4a5568;
     }
-    
-    #btnStart, #btnStop {
-        min-width: 100px;
-        margin: 0 5px;
-    }
-    
-    #ml {
-        border: 1px solid #e2e8f0;
-        border-radius: 4px;
-    }
-    
-    #ml:focus {
-        border-color: #4299e1;
-        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+
+    /* Alarme */
+    .alarm-item span {
+        color: #4a4a4a;
     }
 
-    .tip-item {
-        transition: opacity 0.5s ease-in-out;
-        opacity: 0;
+    /* Select baby selector */
+    #baby-selector {
+        border-radius: 20px;
+        background-color: #f5f5f5;
+        border: none;
+        box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+        transition: box-shadow 0.3s ease;
+        padding: 8px 15px;
+        font-size: 1rem;
     }
 
-    .tip-item.fade-in {
-        opacity: 1;
+    #baby-selector:focus {
+        outline: none;
+        box-shadow: 0 0 5px 2px rgba(147, 59, 59, 0.5);
+        background-color: white;
     }
 
+    /* Dicas */
     .tip-item h6 {
-        color: #2d3748;
+        color: #933b3b;
         margin-bottom: 0.5rem;
     }
 
@@ -74,21 +158,21 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-10">
             @if($babies->isEmpty())
                 <div class="card">
                     <div class="card-header">Registrar Novo Bebê</div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('baby.store') }}">
                             @csrf
-                            <div class="form-group">
-                                <label for="name">Nome do Bebê</label>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nome do Bebê</label>
                                 <input type="text" class="form-control" id="name" name="name" required>
                             </div>
-                            <div class="form-group">
-                                <label for="birth_date">Data de Nascimento</label>
+                            <div class="mb-3">
+                                <label for="birth_date" class="form-label">Data de Nascimento</label>
                                 <input type="date" class="form-control" id="birth_date" name="birth_date" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Registrar</button>
@@ -97,39 +181,37 @@
                 </div>
             @else
                 <div class="card mb-4">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Dashboard</h5>
-                            <select class="form-control w-auto" id="baby-selector">
-                                @foreach($babies as $b)
-                                    <option value="{{ $b->id }}" {{ $b->id === $baby->id ? 'selected' : '' }}>
-                                        {{ $b->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Dashboard</h5>
+                        <select class="form-control w-auto" id="baby-selector">
+                            @foreach($babies as $b)
+                                <option value="{{ $b->id }}" {{ $b->id === $baby->id ? 'selected' : '' }}>
+                                    {{ $b->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
                 <div class="row">
-                    <!-- Coluna de Amamentação -->
+                    <!-- Amamentação -->
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">Amamentação</div>
                             <div class="card-body">
-                                <div class="timer text-center mb-3" id="timer">00:00</div>
+                                <div id="timer" class="timer">00:00</div>
                                 
                                 <div class="text-center mb-3">
                                     <button id="btnStart" class="btn btn-primary">Iniciar</button>
                                     <button id="btnStop" class="btn btn-danger" disabled>Parar</button>
                                 </div>
 
-                                <div class="input-section" id="inputSection" style="display: none;">
-                                    <div class="form-group">
-                                        <label for="ml">Quantidade de leite (mL) <small>(opcional)</small>:</label>
+                                <div id="inputSection" class="input-section" style="display: none;">
+                                    <div class="mb-3">
+                                        <label for="ml" class="form-label">Quantidade de leite (mL) <small>(opcional)</small>:</label>
                                         <input type="number" class="form-control" id="ml" placeholder="Ex: 120">
                                     </div>
-                                    <button type="button" id="btnSave" class="btn btn-success btn-block mt-2">Salvar Registro</button>
+                                    <button id="btnSave" type="button" class="btn btn-success btn-block mt-2">Salvar Registro</button>
                                 </div>
 
                                 <div class="mt-4">
@@ -150,7 +232,7 @@
                         </div>
                     </div>
 
-                    <!-- Coluna de Alarmes -->
+                    <!-- Alarmes -->
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">Alarmes</div>
@@ -158,12 +240,11 @@
                                 @foreach($alarms as $alarm)
                                     <div class="alarm-item d-flex justify-content-between align-items-center mb-2">
                                         <span>{{ $alarm->formatted_time }} - {{ $alarm->day_name }}</span>
-                                        <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input alarm-toggle" 
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox" class="form-check-input alarm-toggle" 
                                                 id="alarm-{{ $alarm->id }}" 
                                                 data-alarm-id="{{ $alarm->id }}"
                                                 {{ $alarm->is_active ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="alarm-{{ $alarm->id }}"></label>
                                         </div>
                                     </div>
                                 @endforeach
@@ -171,7 +252,7 @@
                         </div>
                     </div>
 
-                    <!-- Coluna de Dicas -->
+                    <!-- Dicas do Dia -->
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">Dicas do Dia</div>
